@@ -167,3 +167,298 @@ search strategy that uses no problem-specific knowledge
 ### informed search
 
 search strategy that uses problem-specific knowledge to find solutions more efficiently
+
+
+
+<h2 style="text-align: center">
+Logic Terms
+</h2>
+
+---
+
+### knowledge-based agents
+
+agents that reason by operating on internal presentations of knowledge.
+
+### sentence
+
+an assertion about the world in a knowledge representation language.
+
+
+
+<h2 style="text-align: center">
+Propositional Logic
+</h2>
+
+---
+
+Symbols:
+$$
+P  Q  R
+$$
+
+
+### model
+
+assignment of a truth value to every proposition symbol (a possible world)
+
+### knowledge base
+
+a set of sentences known by a knowledge-based agent to be true
+
+### entailment
+
+$$
+a ⊨ B
+$$
+
+in every model in which sentence **a** is true, sentence **b** is also true.
+
+(a: alpha, b: beta).
+
+
+
+### inference
+
+the process of deriving new sentences from old ones.
+$$
+KB = (P ∧ ¬Q) –> R
+$$
+
+### Model checking algorithm
+
+To determine if:
+$$
+KB ⊨ a
+$$
+Enumerates all possible models.
+
+If in every model where **KB** is true, **a** is true, then **KB** entails **a**.
+
+Otherwise, **KB** does not entail **a**.
+
+### Modus Ponens (rule)
+
+$$
+a -> B
+$$
+
+$$
+a
+$$
+
+$$
+---
+$$
+
+$$
+B
+$$
+
+### And elimination
+
+$$
+a ∧ B
+$$
+
+$$
+---
+$$
+
+$$
+a
+$$
+
+### Double negation elimination
+
+$$
+¬(¬a)
+$$
+
+$$
+---
+$$
+
+$$
+a
+$$
+
+### Implication elimination
+
+$$
+a -> B
+$$
+
+$$
+---
+$$
+
+$$
+¬a v B
+$$
+
+### Conditional elimination
+
+$$
+a <-> B
+$$
+
+$$
+---
+$$
+
+$$
+(a -> B) ∧ (B -> a)
+$$
+
+### De Morgan's law
+
+$$
+¬(a ∧ B)
+$$
+
+$$
+---
+$$
+
+$$
+(¬a) v (¬B)
+$$
+
+and also:
+$$
+¬(avB)
+$$
+
+$$
+---
+$$
+
+$$
+¬a ∧ ¬B
+$$
+
+### Distributive property
+
+$$
+(a ∧ (BvY))
+$$
+
+$$
+---
+$$
+
+$$
+(a ∧ B) v (a ∧ Y)
+$$
+
+### Resolution rule
+
+$$
+PvQ
+$$
+
+$$
+¬P
+$$
+
+$$
+---
+$$
+
+$$
+Q
+$$
+
+also:
+$$
+PvQ
+$$
+
+$$
+¬PvR
+$$
+
+$$
+---
+$$
+
+$$
+QvR
+$$
+
+---
+
+also:
+$$
+P
+$$
+
+$$
+¬P
+$$
+
+$$
+---
+$$
+
+$$
+()
+$$
+
+### Clause
+
+A disjunction of literals.
+
+e.g. `P v Q v R`
+
+### conjunctive normal form
+
+logical sentence that is a conjunction of clauses
+
+e.g. `(A v B v C) ∧ (D v ¬E) ∧ (F v G)`
+
+### Conversion to CNF
+
+Eliminate biconditionals
+
+​	turn **(a <-> B)** into **(a -> B) ^ (B -> a)**
+
+Eliminate implications
+
+​	turn **(a -> B)** into **¬a v B**
+
+Move **¬** inwards using De Morgan's Laws
+
+​	turn **¬(a ^ B)** into **¬a v ¬B**
+
+Use distributive law to distribute **v** whenever possible.
+
+
+$$
+(P v Q) -> R
+$$
+
+$$
+¬(PvQ) v R
+$$
+
+$$
+(¬P ∧ ¬Q) v R
+$$
+
+$$
+(¬P v R) ∧ (¬Q v R)
+$$
+
+### Inference by resolution
+
+To determine if **KB ⊨ a**:
+
+​	Convert **(KB ^ ¬a)** to CNF.
+
+​	Keep checking to see if we can use resolution to produce a new clause:
+
+​		if ever we produce the empty clause (false), we have a contradiction, and **KB ⊨ a**.
+
+​		Otherwise, if we can't add new clauses, no entailment.
