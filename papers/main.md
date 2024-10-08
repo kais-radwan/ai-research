@@ -462,3 +462,71 @@ To determine if **KB ⊨ a**:
 ​		if ever we produce the empty clause (false), we have a contradiction, and **KB ⊨ a**.
 
 ​		Otherwise, if we can't add new clauses, no entailment.
+
+---
+
+<h2 style="text-align: center">
+Probability
+</h2>
+
+$$
+P(w)
+$$
+
+where w = worlds.
+$$
+0 <= P(2) <= 1
+$$
+
+$$
+Σ P(w) = 1
+$$
+
+### conditional probability
+
+$$
+P(a|b)
+$$
+
+$$
+P(a|b) = P(a ∧ b) / P(b)
+$$
+
+$$
+P(a ∧ b) = P(a)P(b|a)
+$$
+
+
+
+### random variable
+
+a variable in probability theory with a domain of possible values it can take on.
+
+### independence
+
+$$
+P(a ∧ b) = P(a)P(b)
+$$
+
+
+
+### Bayes' rule
+
+$$
+P(b|a) = (P(b)P(a|b))/P(a)
+$$
+
+### Bayesian network
+
+data structure that represents the dependencies among random variables.
+
+directed graph.
+
+each node represents a random variable.
+
+arrow from X to Y means X is a parent of Y.
+
+each node X has probability distribution:
+$$
+P(X|Parents(X))
+$$
