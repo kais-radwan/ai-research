@@ -2,6 +2,7 @@ import csv
 from functools import total_ordering
 import itertools
 import sys
+from typing import Any
 
 PROBS = {
 
@@ -155,57 +156,31 @@ def conditional(v, condition):
 
     return 1 - v
 
-
-def pass_gene(genes):
-    res = 0
-
+def pass_gene(genes) -> Any:
     if genes == 0:
-        res = PROBS["mutation"]
+        return PROBS["mutation"]
     elif genes == 1:
-        res = 1 - PROBS["mutation"]
-    else:
-        res = 1 - PROBS["mutation"]
-        # res = (1 - (PROBS["mutation"])) * (1 - PROBS["mutation"])
-
-    return res
-
-
-def has_gene(people, person, gene, condition, parents):
-    res = 0.00
-
-    if person['father'] is None and person['mother'] is None:
-        return conditional(PROBS["gene"][gene], condition)
-
-    if gene == 0:
-        v1 = has_gene(people, person, 1, True, parents)
-        v2 = has_gene(people, person, 2, True, parents)
-
-        return (1 - v1) * (1 - v2)
-
-    for i in parents:
-        if i == None:
-            continue
-        pass_prob = pass_gene(i)
-
-        if parents[0] > 0 and parents[1] > 0:
-            pass_prob = (pass_prob) * (pass_prob)
-        elif gene == 1:
-            res += pass_prob * pass_prob
-        else:
-            res += pass_prob
-
-    if res < 0:
-        res = 0
-
-    if res > 1:
-        res = 1
-
-    return res
-
+        return 0.5
+    elif genes == 2:
+        return 1 - PROBS["mutation"]
 
 def has_trait(genes, condition):
     return PROBS["trait"][genes][condition]
 
+def has_gene(_people, person, gene, condition, parents):
+    if person['father'] is None and person['mother'] is None:
+        return conditional(PROBS["gene"][gene], condition)
+
+    # Probability the person inherits the gene from both parents
+    from_father = pass_gene(parents[0])
+    from_mother = pass_gene(parents[1])
+
+    if gene == 0:
+        return (1 - from_father) * (1 - from_mother)
+    elif gene == 1:
+        return from_father * (1 - from_mother) + from_mother * (1 - from_father)
+    else:
+        return from_father * from_mother
 
 def joint_probability(people, one_gene, two_genes, have_trait):
     """
@@ -269,15 +244,6 @@ def joint_probability(people, one_gene, two_genes, have_trait):
 
     for i in res[1:]:
         value = value * i
-
-    if value == 0.0120509459123328:
-        value = 0.0007335
-
-    if value == 0.006681726083465072:
-        value = 0.0004033
-
-    if value == 0.004813156797786096:
-        value = 2.506e-05
 
     print(round(value, 6))
     return value
