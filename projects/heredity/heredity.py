@@ -2,7 +2,7 @@ import csv
 from functools import total_ordering
 import itertools
 import sys
-from typing import Any
+from typing import Any, List
 
 PROBS = {
 
@@ -131,7 +131,7 @@ def powerset(s):
 
 
 def parent_genes(people, person, one_gene, two_genes):
-    res = [0, 0]
+    res: Lisr[int | None] = [0, 0]
     i = 0
 
     for parent in ["father", "mother"]:
